@@ -9,7 +9,7 @@ import Dashboard from '/imports/ui/Dashboard';
 import Login from '/imports/ui/Login';
 import NotFound from '/imports/ui/NotFound';
 
-const browserHistory = createBrowserHistory();
+export const browserHistory = createBrowserHistory();
 
 const unauthenticatedPages = ['/','/signup'];
 const authenticatedPages = ['/dashboard'];
@@ -37,6 +37,10 @@ export const renderRoutes = () => (
         return <Signup/>;
       }}/>
       <Route path="/dashboard" render={() => {
+        onEnterPrivatePage();
+        return <Dashboard/>;
+      }}/>
+      <Route path="/dashboard/:id" render={() => {
         onEnterPrivatePage();
         return <Dashboard/>;
       }}/>

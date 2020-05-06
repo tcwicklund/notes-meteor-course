@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 import { render } from 'react-dom';
+import { Session } from 'meteor/session';
 
-import { onAuthChange, renderRoutes } from '../imports/routes/routes';
+import { browserHistory, onAuthChange, renderRoutes } from '../imports/routes/routes';
 import '../imports/startup/simple-schema-config';
 
 Tracker.autorun(() => {
@@ -20,6 +21,15 @@ Tracker.autorun(() => {
 //   );
 // };
 
+Tracker.autorun(() => {
+  const selectedNoteId = Session.get('selectedNoteId');
+
+  if (selectedNoteId) {
+    browserHistory.replace(`/dashboard/${selectedNoteId}`);
+  }
+});
+
 Meteor.startup(() => {
+  Session.set('selectedNoteId', undefined);
   render(renderRoutes(), document.getElementById('app'));
 });
