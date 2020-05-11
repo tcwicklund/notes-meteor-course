@@ -16,7 +16,6 @@
     "react": "^16.13.0",
     "react-addons-pure-render-mixin": "^15.6.2",
     "react-dom": "^16.13.0",
-    "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "simpl-schema": "^1.5.9"
   },

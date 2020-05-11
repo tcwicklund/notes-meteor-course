@@ -1,70 +1,27 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
-import { Router, Route, Switch } from 'react-router';
+import { Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
 // route components
-import Signup from '/imports/ui/Signup';
-import Dashboard from '/imports/ui/Dashboard';
-import Login from '/imports/ui/Login';
-import NotFound from '/imports/ui/NotFound';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+import Signup from '../ui/Signup';
+import Dashboard from '../ui/Dashboard';
+import Login from '../ui/Login';
+import NotFound from '../ui/NotFound';
 
-export const browserHistory = createBrowserHistory();
+export const history = createBrowserHistory();
 
-const unauthenticatedPages = ['/','/signup'];
-const authenticatedPages = ['/dashboard'];
-const onEnterPublicPage = () => {
-  if (Meteor.userId()) {
-    browserHistory.replace('/dashboard');
-  }
-};
-const onEnterPrivatePage = () => {
-  if (!Meteor.userId()) {
-    browserHistory.replace('/');
-  }
-};
-const onEnterNotePage = (nextState) => {
-  if (!Meteor.userId()) {
-    browserHistory.replace('/');
-  } else {
-    Session.set('selectedNoteId', nextState.match.params.id);
-  }
-};
-
-
-export const renderRoutes = () => (
-  <Router history={browserHistory}>
+export const AppRouter = () => (
+  <Router history={history}>
     <Switch>
-      <Route exact path="/" render={() => {
-        onEnterPublicPage();
-        return <Login/>;
-      }}/>
-      <Route path="/signup" render={() => {
-        onEnterPublicPage();
-        return <Signup/>;
-      }}/>
-      <Route path="/dashboard/:id" render={(props) => {
-        onEnterNotePage(props);
-        return <Dashboard/>;
-      }}/>
-      <Route path="/dashboard" render={() => {
-        onEnterPrivatePage();
-        return <Dashboard/>;
-      }}/>
-      <Route render={() => <NotFound/>}/>
+      <PublicRoute path="/" component={Login} exact={true} />
+      <PublicRoute path="/signup" component={Signup} />
+      <PrivateRoute path="/dashboard" component={Dashboard} exact={true} />
+      <PrivateRoute path="/dashboard/:id" component={Dashboard} />
+      <Route path="*" component={NotFound} />
     </Switch>
   </Router>
 );
-
-export const onAuthChange = (isAuthenticated) => {
-  const pathname = browserHistory.location.pathname;
-  const isUnauthenticatedPage = unauthenticatedPages.includes(pathname);
-  const isAuthenticatedPage = authenticatedPages.includes(pathname);
-
-  if (isAuthenticated && isUnauthenticatedPage) {
-    browserHistory.replace('/dashboard');
-  } else if (!isAuthenticated && isAuthenticatedPage) {
-    browserHistory.replace('/');
-  }
-};

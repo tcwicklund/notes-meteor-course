@@ -1,35 +1,29 @@
+import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import { Session } from 'meteor/session';
 import { Tracker } from 'meteor/tracker';
 import { render } from 'react-dom';
-import { Session } from 'meteor/session';
 
-import { browserHistory, onAuthChange, renderRoutes } from '../imports/routes/routes';
+import { AppRouter, history, onAuthChange } from '../imports/routes/routes';
 import '../imports/startup/simple-schema-config';
 
 Tracker.autorun(() => {
-  const isAuthenticated = !!Meteor.userId();
-  onAuthChange(isAuthenticated);
-});
-
-// // Stateless functional components
-// import React from 'react';
-// const MyComponent = (props) => {
-//   return (
-//     <div>
-//       <h1>MyComponent is here! {props.name}</h1>
-//     </div>
-//   );
-// };
-
-Tracker.autorun(() => {
   const selectedNoteId = Session.get('selectedNoteId');
+  Session.set('isNavOpen', false);
 
   if (selectedNoteId) {
-    browserHistory.replace(`/dashboard/${selectedNoteId}`);
+    history.replace(`/dashboard/${selectedNoteId}`);
   }
+});
+
+Tracker.autorun(() => {
+  const isNavOpen = Session.get('isNavOpen');
+
+  document.body.classList.toggle('is-nav-open', isNavOpen);
 });
 
 Meteor.startup(() => {
   Session.set('selectedNoteId', undefined);
-  render(renderRoutes(), document.getElementById('app'));
+  Session.set('isNavOpen', false);
+  render(<AppRouter />, document.getElementById('app'));
 });

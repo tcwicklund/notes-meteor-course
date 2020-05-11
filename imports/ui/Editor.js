@@ -30,6 +30,10 @@ export class Editor extends React.Component {
     this.props.call('notes.remove', this.props.note._id);
   }
 
+  componentDidMount() {
+    Session.set('selectedNoteId', this.props.selectedNoteId);
+  }
+
   render() {
     if (this.props.note) {
       return (
