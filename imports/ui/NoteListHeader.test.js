@@ -9,17 +9,38 @@ configure({ adapter: new Adapter() });
 chai.use(spies);
 
 import { NoteListHeader } from './NoteListHeader';
+import { notes } from '../fixtures/fixtures';
 
 if (Meteor.isClient) {
   describe('NoteListHeader', function () {
+    let meteorCall, Session;
+
+    beforeEach(function() {
+      meteorCall = chai.spy();
+      Session = {
+        set: chai.spy()
+      }
+    });
 
     it('should call meteorCall on click', function(){
-      const spy = chai.spy();
-      const wrapper = mount( <NoteListHeader meteorCall={spy}/> );
+      const wrapper = mount( <NoteListHeader meteorCall={meteorCall} Session={Session}/> );
 
       wrapper.find('button').simulate('click');
+      meteorCall.__spy.calls[0][1](undefined, notes[0]._id)
 
-      expect(spy).to.have.been.called.with('notes.insert');
+      expect(meteorCall.__spy.calls[0][0]).to.equal('notes.insert');
+      expect(Session.set).to.have.been.called.with('selectedNoteId', notes[0]._id);
     });
+
+    it('should not set session for failed insert', function(){
+      const wrapper = mount( <NoteListHeader meteorCall={meteorCall} Session={Session}/> );
+
+      wrapper.find('button').simulate('click');
+      meteorCall.__spy.calls[0][1]({}, undefined);
+
+      expect(meteorCall.__spy.calls[0][0]).to.equal('notes.insert');
+      expect(Session.set).to.not.have.been.called();
+    });
+
   });
 }
