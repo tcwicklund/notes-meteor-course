@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, BrowserRouter } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
@@ -44,7 +44,9 @@ export class Signup extends React.Component {
           <button className="button">Create Account</button>
           </form>
 
+          <BrowserRouter>
             <Link to="/">Have an account?</Link>
+          </BrowserRouter>
         </div>
       </div>
     );

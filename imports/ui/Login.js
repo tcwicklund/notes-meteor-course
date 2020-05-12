@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, BrowserRouter } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
@@ -38,8 +38,9 @@ export class Login extends React.Component {
           <input type="password" ref="password" name="password" placeholder="Password"/>
           <button className="button">Login</button>
           </form>
-
-          <Link to="/signup">Need an account?</Link>
+          <BrowserRouter>
+            <Link to="/signup">Need an account?</Link>
+          </BrowserRouter>
         </div>
       </div>
     );
