@@ -4,7 +4,7 @@ import { Session } from 'meteor/session';
 import { Tracker } from 'meteor/tracker';
 import { render } from 'react-dom';
 
-import { AppRouter, history, onAuthChange } from '../imports/routes/routes';
+import { AppRouter, history, onAuthChange } from '../imports/routes/AppRouter';
 import '../imports/startup/simple-schema-config';
 
 Tracker.autorun(() => {

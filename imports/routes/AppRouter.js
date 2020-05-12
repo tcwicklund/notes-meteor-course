@@ -9,8 +9,8 @@ import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import Signup from '../ui/Signup';
 import Dashboard from '../ui/Dashboard';
-import Login from '../ui/Login';
 import NotFound from '../ui/NotFound';
+import Login from '../ui/Login';
 
 export const history = createBrowserHistory();
 
