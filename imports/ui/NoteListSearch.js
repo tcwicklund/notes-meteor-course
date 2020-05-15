@@ -6,10 +6,9 @@ import { withTracker } from 'meteor/react-meteor-data';
 export const NoteListSearch = (props) => {
   return (
     <div className="item-list__search">
-      <input type="text" placeholder="Search notes" value={props.Session.get('searchText')}
-        onChange={(e) => props.Session.set('searchText', e.target.value.trim().toLowerCase())}
+      <input type="search" placeholder="Search notes" 
+        onChange={(e) => Session.set('searchText', e.target.value.trim().toLowerCase())}
       />
-      <button className="button button--secondary" onClick={() => props.Session.set('searchText','')}>Clear</button>
     </div>
   );
 };

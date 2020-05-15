@@ -19,7 +19,7 @@ export const NoteList = props => {
       { props.notes.length === 0 ? <NoteListEmptyItem/> : undefined }
       { props.notes
           .filter((note) => {
-            return note.title.toLowerCase().indexOf(Session.get('searchText')) > -1;
+            return note.title.toLowerCase().indexOf(props.searchText) > -1;
           })
           .map((note) => {
             return <NoteListItem key={note._id} note={note}/>;
@@ -31,7 +31,7 @@ export const NoteList = props => {
 
 NoteList.propTypes = {
   notes: PropTypes.array.isRequired,
-  searchText: PropTypes.string
+  searchText: PropTypes.string.isRequired
 }
 
 export default withTracker(() => {
