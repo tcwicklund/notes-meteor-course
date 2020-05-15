@@ -1,7 +1,7 @@
 // Item List
 .item-list {
   background-color: white;
-  border: 1px solid $grey;
+  border: $boxed-view-border;
   overflow-y: scroll;
   width: 100%;
   -webkit-overflow-scrolling: touch;
@@ -11,6 +11,25 @@
   display: flex;
   flex-direction: column;
   padding: $space;
+
+  button {
+    @include form-margin-fix;
+  }
+}
+
+.item-list__search {
+  display: flex;
+  padding: 0px $space;
+  text-align: center;
+
+  input {
+    flex: 1;
+    @include form-margin-fix;
+  }
+
+  button {
+    @include form-margin-fix;
+  }
 }
 
 // Item

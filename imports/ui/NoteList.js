@@ -6,24 +6,32 @@ import { withTracker } from 'meteor/react-meteor-data';
 
 import { Notes } from '../api/notes';
 import NoteListHeader from './NoteListHeader';
+import NoteListSearch from './NoteListSearch';
 import NoteListItem from './NoteListItem';
 import NoteListEmptyItem from './NoteListEmptyItem';
 
-export const NoteList = (props) => {
+export const NoteList = props => {
 
   return (
     <div className="item-list">
       <NoteListHeader/>
+      <NoteListSearch/>
       { props.notes.length === 0 ? <NoteListEmptyItem/> : undefined }
-      {props.notes.map((note) => {
-        return <NoteListItem key={note._id} note={note}/>;
-      })}
+      { props.notes
+          .filter((note) => {
+            return note.title.toLowerCase().indexOf(Session.get('searchText')) > -1;
+          })
+          .map((note) => {
+            return <NoteListItem key={note._id} note={note}/>;
+          })
+      }
     </div>
   );
 };
 
 NoteList.propTypes = {
-  notes: PropTypes.array.isRequired
+  notes: PropTypes.array.isRequired,
+  searchText: PropTypes.string
 }
 
 export default withTracker(() => {
@@ -32,6 +40,7 @@ export default withTracker(() => {
   Meteor.subscribe('notes');
 
   return {
+    searchText: Session.get('searchText'),
     notes: Notes.find({},{
       sort: {
         lastUpdatedAt: -1

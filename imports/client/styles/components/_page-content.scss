@@ -10,6 +10,7 @@
 }
 
 .page-content__sidebar {
+  box-sizing: content-box;
   display: flex;
   transition: left .3s ease;
   width: 100vw;
@@ -22,7 +23,7 @@
 
   @include desktop {
     display: flex;
-    padding-right: $large-space;
+    padding-right: $space;
     position: static;
     width: $page-content-sidebar-width;
   }

@@ -30,6 +30,7 @@ export class Editor extends React.Component {
 
   handleRemoval() {
     this.props.call('notes.remove', this.props.note._id);
+    Session.set('isNavOpen', !Session.get('isNavOpen'));
     this.props.history.push('/dashboard');
   }
 
@@ -55,6 +56,7 @@ export class Editor extends React.Component {
         <div className="editor">
           <input className="editor__title"
             value={this.state.title}
+            placeholder="Note Title"
             onChange={this.handleTitleChange.bind(this)}/>
           <textarea className="editor__body"
             value={this.state.body}
