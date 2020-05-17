@@ -52,7 +52,9 @@ export class Editor extends React.Component {
   }
 
   componentDidMount() {
-    Session.set('selectedNoteId', this.props.selectedNoteId);
+    if (this.props.match) {
+      Session.set('selectedNoteId', this.props.match.params.id);
+    }
   }
 
   render() {
