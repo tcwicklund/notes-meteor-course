@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
+import FlipMove from 'react-flip-move';
 
 import { Notes } from '../api/notes';
 import NoteListHeader from './NoteListHeader';
@@ -17,13 +18,14 @@ export const NoteList = props => {
       <NoteListHeader/>
       <NoteListSearch/>
       { props.notes.length === 0 ? <NoteListEmptyItem/> : undefined }
-      { props.notes
-          .filter((note) => {
-            return note.title.toLowerCase().indexOf(props.searchText) > -1;
-          })
-          .map((note) => {
-            return <NoteListItem key={note._id} note={note}/>;
-          })
+      {
+        props.notes
+        .filter((note) => {
+          return note.title.toLowerCase().indexOf(props.searchText) > -1
+        })
+        .map((note) => {
+          return <NoteListItem key={note._id} note={note}/>
+        })
       }
     </div>
   );

@@ -4,15 +4,19 @@ import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter } from 'react-router-dom';
+import Modal from 'react-modal';
 
 import { Notes } from '../api/notes';
+
+Modal.setAppElement('#app');
 
 export class Editor extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       title: '',
-      body: ''
+      body: '',
+      showModal: false
     };
   }
 
@@ -30,6 +34,7 @@ export class Editor extends React.Component {
 
   handleRemoval() {
     this.props.call('notes.remove', this.props.note._id);
+    this.setState({showModal: false});
     Session.set('isNavOpen', !Session.get('isNavOpen'));
     this.props.history.push('/dashboard');
   }
@@ -66,7 +71,16 @@ export class Editor extends React.Component {
           <div>
             <button
               className="button button--secondary"
-              onClick={this.handleRemoval.bind(this)}>Delete Note</button>
+              onClick={()=>this.setState({showModal: true})}>Delete Note</button>
+            <Modal isOpen={this.state.showModal} onClose={()=>this.setState({showModal: false})}
+              contentLabel="Remove Note Confirmation"
+              onRequestClose={() => this.setState({showModal: false})}
+              overlayClassName="boxed-view boxed-view__modal"
+              className="boxed-view__box">
+              <h2>Are you sure you want to delete the note?</h2>
+              <button className="button button--secondary" onClick={this.handleRemoval.bind(this)}>Yes, remove it!</button>
+              <button className="button button--secondary" onClick={() => this.setState({showModal: false})}>Cancel</button>
+            </Modal>
           </div>
         </div>
       )
